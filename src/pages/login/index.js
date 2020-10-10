@@ -6,8 +6,8 @@ import { setHeaderMenu, setSiderMenu} from '../../redux/actions/userInfo'
 import './index.less'
 import { withRouter } from 'react-router-dom'
 import { Form, Icon, Input, Button, notification} from 'antd'
-import API from '../../api'
-import { post } from '../../service/request'
+//import API from '../../api'
+//import { post } from '../../service/request'
 import { menus } from '../../mock/menuStore';
 
 const loginBg = require('../../assets/images/bg-login.jpg')
@@ -46,16 +46,19 @@ class Login extends React.Component {
       }else{
         firstPath = menus[0].children[0].path
       }
-      this.props.history.push( firstPath );
+      this.props.history.push(firstPath);
     },500)
   }
   
   handleSubmit = e => {
     e.preventDefault();
-    this.props.history.push("/home");
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        post(API.login.login(), values)
+         localStorage.setItem("userName", values.userName);
+         openNotification("success", '登录成功');
+         this.getMenus();     
+        // this.props.history.push("/home"); 
+        /*post(API.login.login(), values)
           .then(res => {
             console.log(res);
             if (res.status === 200) {
@@ -68,7 +71,7 @@ class Login extends React.Component {
           })
           .catch(err => {
             console.log(err);
-          });
+          });*/
       }
     });
   };
